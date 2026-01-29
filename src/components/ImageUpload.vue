@@ -59,6 +59,12 @@
           </button>
         </div>
 
+        <div v-if="uploadedImages.length > 0" class="continue-section">
+          <button type="button" @click="continueToSEO" class="btn btn-continue">
+            Continue to SEO Configuration →
+          </button>
+        </div>
+
         <div v-if="message" :class="['message', messageType]">
           {{ message }}
         </div>
@@ -163,6 +169,9 @@ export default {
     },
     goBack() {
       this.$emit('go-back')
+    },
+    continueToSEO() {
+      this.$emit('continue-to-seo')
     }
   }
 }
@@ -402,6 +411,30 @@ export default {
   margin-top: 2rem;
   padding-top: 2rem;
   border-top: 2px solid #f0f0f0;
+}
+
+.continue-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f0f0f0;
+  text-align: center;
+}
+
+.btn-continue {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-continue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
 .btn {

@@ -77,6 +77,126 @@ export const productService = {
     } catch (error) {
       throw error
     }
+  },
+  async createProductSEO(seoData) {
+    try {
+      const response = await apiClient.post('/product-seo', seoData)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async updateProductSEO(seoId, seoData) {
+    try {
+      const response = await apiClient.put(`/product-seo/${seoId}`, seoData)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async getProducts() {
+    try {
+      const response = await apiClient.get('/collections')
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async getProductSEO(productId) {
+    try {
+      const response = await apiClient.get(`/product-seo/product/${productId}`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
   }
 }
 
+export const orderService = {
+  async getOrders() {
+    try {
+      const response = await apiClient.get('/orders')
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async getOrderById(orderId) {
+    try {
+      const response = await apiClient.get(`/orders/${orderId}`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
+export const faqService = {
+  async getFAQs() {
+    try {
+      const response = await apiClient.get('/faqs')
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async createFAQ(faqData) {
+    try {
+      const response = await apiClient.post('/faqs', faqData)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async updateFAQ(faqId, faqData) {
+    try {
+      const response = await apiClient.put(`/faqs/${faqId}`, faqData)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async deleteFAQ(faqId) {
+    try {
+      const response = await apiClient.delete(`/faqs/${faqId}`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
+export const blogService = {
+  async createBlog(blogData) {
+    try {
+      const response = await apiClient.post('/blog', blogData)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async updateBlog(blogId, blogData) {
+    try {
+      const response = await apiClient.put(`/blog/${blogId}`, blogData)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async getBlogs() {
+    try {
+      const response = await apiClient.get('/blog')
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  async getBlogById(blogId) {
+    try {
+      const response = await apiClient.get(`/blog/${blogId}`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+}

@@ -1,9 +1,9 @@
 // API Configuration
-// Update this file to change the API base URL for all API calls
+// The API base URL is now controlled by environment variables
+// Use .env.local for local development (localhost:9090)
+// Use .env.production for production (https://api.svrve.com)
 
 export const API_CONFIG = {
-  BASE_URL: 'http://localhost:9090'
-  // Change the above URL to your production API URL when deploying
-  // Example: BASE_URL: 'https://api.yourdomain.com'
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:9090'
 }
 

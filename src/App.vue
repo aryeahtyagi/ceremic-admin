@@ -6,7 +6,7 @@
         <div class="header-content">
           <div>
             <h1>Ceremic Admin Panel</h1>
-            <p class="subtitle">{{ currentView === 'form' ? 'Product Upload System' : 'Image Upload' }}</p>
+            <p class="subtitle">{{ getSubtitle() }}</p>
           </div>
           <button @click="handleLogout" class="logout-btn">
             Logout
@@ -14,8 +14,14 @@
         </div>
       </header>
       <main class="main-content">
-        <ProductForm v-if="currentView === 'form'" @product-created="handleProductCreated" />
-        <ImageUpload v-else :product="createdProduct" @go-back="handleGoBack" />
+        <Navigation :current-view="currentView" @navigate="handleNavigate" />
+        <ProductForm v-if="currentView === 'products'" @product-created="handleProductCreated" />
+        <ImageUpload v-else-if="currentView === 'upload'" :product="createdProduct" @go-back="handleGoBack" @continue-to-seo="handleContinueToSEO" />
+        <SEOForm v-else-if="currentView === 'seo'" :product="createdProduct" @go-back="handleGoBackFromSEO" @seo-completed="handleSEOCompleted" />
+        <EditProduct v-else-if="currentView === 'edit-product'" />
+        <BlogManagement v-else-if="currentView === 'blog'" />
+        <OrdersList v-else-if="currentView === 'orders'" />
+        <FAQForm v-else-if="currentView === 'faqs'" />
       </main>
     </div>
   </div>
@@ -24,26 +30,40 @@
 <script>
 import ProductForm from './components/ProductForm.vue'
 import ImageUpload from './components/ImageUpload.vue'
+import SEOForm from './components/SEOForm.vue'
+import EditProduct from './components/EditProduct.vue'
+import BlogManagement from './components/BlogManagement.vue'
 import Login from './components/Login.vue'
+import Navigation from './components/Navigation.vue'
+import OrdersList from './components/OrdersList.vue'
+import FAQForm from './components/FAQForm.vue'
 
 export default {
   name: 'App',
   components: {
     ProductForm,
     ImageUpload,
-    Login
+    SEOForm,
+    EditProduct,
+    BlogManagement,
+    Login,
+    Navigation,
+    OrdersList,
+    FAQForm
   },
   data() {
     return {
       isAuthenticated: false,
-      currentView: 'form',
+      currentView: 'products',
       createdProduct: null
     }
   },
   mounted() {
+    console.log('App mounted')
     // Check if user is already authenticated
     const authStatus = localStorage.getItem('isAuthenticated')
     this.isAuthenticated = authStatus === 'true'
+    console.log('Authentication status:', this.isAuthenticated)
   },
   methods: {
     handleLoginSuccess() {
@@ -53,7 +73,7 @@ export default {
       localStorage.removeItem('isAuthenticated')
       localStorage.removeItem('userid')
       this.isAuthenticated = false
-      this.currentView = 'form'
+      this.currentView = 'products'
       this.createdProduct = null
     },
     handleProductCreated(product) {
@@ -61,8 +81,37 @@ export default {
       this.currentView = 'upload'
     },
     handleGoBack() {
-      this.currentView = 'form'
+      this.currentView = 'products'
       this.createdProduct = null
+    },
+    handleContinueToSEO() {
+      this.currentView = 'seo'
+    },
+    handleGoBackFromSEO() {
+      this.currentView = 'upload'
+    },
+    handleSEOCompleted() {
+      this.currentView = 'products'
+      this.createdProduct = null
+    },
+    handleNavigate(view) {
+      this.currentView = view
+      // Reset product creation flow when navigating away
+      if (view !== 'upload' && view !== 'seo') {
+        this.createdProduct = null
+      }
+    },
+    getSubtitle() {
+      const subtitles = {
+        'products': 'Product Upload System',
+        'upload': 'Image Upload',
+        'seo': 'SEO Configuration',
+        'edit-product': 'Edit Product',
+        'blog': 'Blog Management',
+        'orders': 'Orders Management',
+        'faqs': 'FAQ Management'
+      }
+      return subtitles[this.currentView] || 'Admin Panel'
     }
   }
 }

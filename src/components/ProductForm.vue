@@ -60,74 +60,70 @@
         
         <div class="form-group">
           <label for="benefitIds">Benefits</label>
-          <select
-            id="benefitIds"
-            v-model="formData.benefitIds"
-            multiple
-            class="form-input form-select-multiple"
-            :disabled="loadingBenefits"
-          >
-            <option v-if="loadingBenefits" value="" disabled>Loading benefits...</option>
-            <option v-else-if="benefits.length === 0" value="" disabled>No benefits available</option>
-            <option v-for="benefit in benefits" :key="'benefit-' + benefit.id" :value="benefit.id">
+          <div v-if="loadingBenefits" class="loading-chips">Loading benefits...</div>
+          <div v-else-if="benefits.length === 0" class="empty-chips">No benefits available</div>
+          <div v-else class="chips-container">
+            <button
+              v-for="benefit in benefits"
+              :key="'benefit-' + benefit.id"
+              type="button"
+              @click="toggleSelection('benefitIds', benefit.id)"
+              :class="['chip', { 'chip-selected': isSelected('benefitIds', benefit.id) }]"
+            >
               {{ benefit.value }} - {{ benefit.description }}
-            </option>
-          </select>
-          <small class="form-hint">Hold Ctrl/Cmd to select multiple</small>
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="productLovePointIds">Product Love Points</label>
-          <select
-            id="productLovePointIds"
-            v-model="formData.productLovePointIds"
-            multiple
-            class="form-input form-select-multiple"
-            :disabled="loadingLovePoints"
-          >
-            <option v-if="loadingLovePoints" value="" disabled>Loading love points...</option>
-            <option v-else-if="lovePoints.length === 0" value="" disabled>No love points available</option>
-            <option v-for="lovePoint in lovePoints" :key="'love-' + lovePoint.id" :value="lovePoint.id">
+          <div v-if="loadingLovePoints" class="loading-chips">Loading love points...</div>
+          <div v-else-if="lovePoints.length === 0" class="empty-chips">No love points available</div>
+          <div v-else class="chips-container">
+            <button
+              v-for="lovePoint in lovePoints"
+              :key="'love-' + lovePoint.id"
+              type="button"
+              @click="toggleSelection('productLovePointIds', lovePoint.id)"
+              :class="['chip', { 'chip-selected': isSelected('productLovePointIds', lovePoint.id) }]"
+            >
               {{ lovePoint.value }}
-            </option>
-          </select>
-          <small class="form-hint">Hold Ctrl/Cmd to select multiple</small>
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="productDetailIds">Product Details</label>
-          <select
-            id="productDetailIds"
-            v-model="formData.productDetailIds"
-            multiple
-            class="form-input form-select-multiple"
-            :disabled="loadingProductDetails"
-          >
-            <option v-if="loadingProductDetails" value="" disabled>Loading product details...</option>
-            <option v-else-if="productDetails.length === 0" value="" disabled>No product details available</option>
-            <option v-for="detail in productDetails" :key="'detail-' + detail.id" :value="detail.id">
+          <div v-if="loadingProductDetails" class="loading-chips">Loading product details...</div>
+          <div v-else-if="productDetails.length === 0" class="empty-chips">No product details available</div>
+          <div v-else class="chips-container">
+            <button
+              v-for="detail in productDetails"
+              :key="'detail-' + detail.id"
+              type="button"
+              @click="toggleSelection('productDetailIds', detail.id)"
+              :class="['chip', { 'chip-selected': isSelected('productDetailIds', detail.id) }]"
+            >
               {{ detail.dimension.name }}: {{ detail.value }}{{ detail.dimension.unit ? ' ' + detail.dimension.unit : '' }}
-            </option>
-          </select>
-          <small class="form-hint">Hold Ctrl/Cmd to select multiple</small>
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="discountIds">Discounts</label>
-          <select
-            id="discountIds"
-            v-model="formData.discountIds"
-            multiple
-            class="form-input form-select-multiple"
-            :disabled="loadingDiscounts"
-          >
-            <option v-if="loadingDiscounts" value="" disabled>Loading discounts...</option>
-            <option v-else-if="enabledDiscounts.length === 0" value="" disabled>No discounts available</option>
-            <option v-for="discount in enabledDiscounts" :key="'discount-' + discount.id" :value="discount.id">
+          <div v-if="loadingDiscounts" class="loading-chips">Loading discounts...</div>
+          <div v-else-if="enabledDiscounts.length === 0" class="empty-chips">No discounts available</div>
+          <div v-else class="chips-container">
+            <button
+              v-for="discount in enabledDiscounts"
+              :key="'discount-' + discount.id"
+              type="button"
+              @click="toggleSelection('discountIds', discount.id)"
+              :class="['chip', { 'chip-selected': isSelected('discountIds', discount.id) }]"
+            >
               {{ discount.discount }}% Off
-            </option>
-          </select>
-          <small class="form-hint">Hold Ctrl/Cmd to select multiple</small>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -275,6 +271,25 @@ export default {
         this.isSubmitting = false
       }
     },
+    isSelected(field, id) {
+      const currentArray = this.formData[field]
+      const numId = Number(id)
+      return currentArray.some(item => Number(item) === numId)
+    },
+    toggleSelection(field, id) {
+      const currentArray = this.formData[field]
+      // Convert to number for consistent comparison
+      const numId = Number(id)
+      const index = currentArray.findIndex(item => Number(item) === numId)
+      
+      if (index > -1) {
+        // Remove if already selected
+        currentArray.splice(index, 1)
+      } else {
+        // Add if not selected
+        currentArray.push(numId)
+      }
+    },
     resetForm() {
       this.formData = {
         name: '',
@@ -352,16 +367,59 @@ export default {
   color: #999;
 }
 
-.form-select-multiple {
-  min-height: 120px;
-  padding: 0.5rem;
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  min-height: 60px;
+  background: #fafafa;
 }
 
-.form-hint {
-  display: block;
-  margin-top: 0.25rem;
+.chip {
+  padding: 0.5rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 20px;
+  background: white;
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.chip-selected {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.chip-selected:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.loading-chips,
+.empty-chips {
+  padding: 1rem;
+  text-align: center;
   color: #666;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
 }
 
 .form-actions {
