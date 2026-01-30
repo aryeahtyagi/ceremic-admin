@@ -185,7 +185,7 @@ export const blogService = {
   },
   async getBlogs() {
     try {
-      const response = await apiClient.get('/blog')
+      const response = await apiClient.get('/blogs')
       return response.data
     } catch (error) {
       throw error
@@ -194,6 +194,30 @@ export const blogService = {
   async getBlogById(blogId) {
     try {
       const response = await apiClient.get(`/blog/${blogId}`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
+export const imageService = {
+  async uploadNativeImage(file) {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await axios.post(
+        `${API_BASE_URL}/upload-native`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'accept': '*/*'
+          }
+        }
+      )
+      // API returns {url: "url"} object
       return response.data
     } catch (error) {
       throw error

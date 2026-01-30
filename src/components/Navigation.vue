@@ -26,6 +26,7 @@ export default {
         { id: 'products', label: 'Product Upload' },
         { id: 'edit-product', label: 'Edit Product' },
         { id: 'blog', label: 'Blog' },
+        { id: 'native-upload', label: 'Upload Native Image' },
         { id: 'orders', label: 'Orders' },
         { id: 'faqs', label: 'FAQs' }
       ]

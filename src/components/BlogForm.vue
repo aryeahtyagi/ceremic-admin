@@ -181,6 +181,18 @@
         </div>
 
         <div class="form-group">
+          <label for="collectionCategory">Collection Category</label>
+          <input
+            id="collectionCategory"
+            v-model="formData.collectionCategory"
+            type="text"
+            placeholder="e.g., STOCKHOLM, Collection Name"
+            class="form-input"
+          />
+          <small class="form-hint">Optional: Category for collection-based blogs</small>
+        </div>
+
+        <div class="form-group">
           <label for="tags">Tags</label>
           <input
             id="tags"
@@ -285,7 +297,8 @@ export default {
         status: 'draft',
         publishedAt: '',
         readingTime: 0,
-        schemaType: ''
+        schemaType: '',
+        collectionCategory: ''
       },
       isSubmitting: false,
       message: '',
@@ -322,6 +335,7 @@ export default {
         this.formData.canonicalUrl = this.blog.canonicalUrl || ''
         this.formData.indexStatus = this.blog.indexStatus || 'index'
         this.formData.category = this.blog.category || ''
+        this.formData.collectionCategory = this.blog.collectionCategory || ''
         this.formData.tags = this.blog.tags || ''
         this.formData.status = this.blog.status || 'draft'
         this.formData.readingTime = this.blog.readingTime || 0
@@ -354,6 +368,7 @@ export default {
           canonicalUrl: this.formData.canonicalUrl || '',
           indexStatus: this.formData.indexStatus,
           category: this.formData.category || '',
+          collectionCategory: this.formData.collectionCategory || null,
           tags: this.formData.tags || '',
           status: this.formData.status,
           publishedAt: this.formData.publishedAt ? new Date(this.formData.publishedAt).toISOString() : new Date().toISOString(),
@@ -361,10 +376,12 @@ export default {
           schemaType: this.formData.schemaType || ''
         }
 
-        if (this.isEditMode && this.blog) {
+        if (this.isEditMode && this.blog && this.blog.id) {
+          // Update existing blog using PUT with ID in URL
           await blogService.updateBlog(this.blog.id, payload)
           this.message = 'Blog updated successfully!'
         } else {
+          // Create new blog using POST
           await blogService.createBlog(payload)
           this.message = 'Blog created successfully!'
         }
@@ -404,7 +421,8 @@ export default {
         status: 'draft',
         publishedAt: '',
         readingTime: 0,
-        schemaType: ''
+        schemaType: '',
+        collectionCategory: ''
       }
       this.message = ''
       this.messageType = ''

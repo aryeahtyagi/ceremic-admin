@@ -20,6 +20,7 @@
         <SEOForm v-else-if="currentView === 'seo'" :product="createdProduct" @go-back="handleGoBackFromSEO" @seo-completed="handleSEOCompleted" />
         <EditProduct v-else-if="currentView === 'edit-product'" />
         <BlogManagement v-else-if="currentView === 'blog'" />
+        <NativeImageUpload v-else-if="currentView === 'native-upload'" />
         <OrdersList v-else-if="currentView === 'orders'" />
         <FAQForm v-else-if="currentView === 'faqs'" />
       </main>
@@ -33,6 +34,7 @@ import ImageUpload from './components/ImageUpload.vue'
 import SEOForm from './components/SEOForm.vue'
 import EditProduct from './components/EditProduct.vue'
 import BlogManagement from './components/BlogManagement.vue'
+import NativeImageUpload from './components/NativeImageUpload.vue'
 import Login from './components/Login.vue'
 import Navigation from './components/Navigation.vue'
 import OrdersList from './components/OrdersList.vue'
@@ -46,6 +48,7 @@ export default {
     SEOForm,
     EditProduct,
     BlogManagement,
+    NativeImageUpload,
     Login,
     Navigation,
     OrdersList,
@@ -108,6 +111,7 @@ export default {
         'seo': 'SEO Configuration',
         'edit-product': 'Edit Product',
         'blog': 'Blog Management',
+        'native-upload': 'Upload Native Image',
         'orders': 'Orders Management',
         'faqs': 'FAQ Management'
       }
