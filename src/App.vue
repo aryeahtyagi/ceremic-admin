@@ -22,6 +22,7 @@
         <BlogManagement v-else-if="currentView === 'blog'" />
         <NativeImageUpload v-else-if="currentView === 'native-upload'" />
         <OrdersList v-else-if="currentView === 'orders'" />
+        <UsersList v-else-if="currentView === 'users'" />
         <FAQForm v-else-if="currentView === 'faqs'" />
       </main>
     </div>
@@ -38,6 +39,7 @@ import NativeImageUpload from './components/NativeImageUpload.vue'
 import Login from './components/Login.vue'
 import Navigation from './components/Navigation.vue'
 import OrdersList from './components/OrdersList.vue'
+import UsersList from './components/UsersList.vue'
 import FAQForm from './components/FAQForm.vue'
 
 export default {
@@ -52,6 +54,7 @@ export default {
     Login,
     Navigation,
     OrdersList,
+    UsersList,
     FAQForm
   },
   data() {
@@ -113,6 +116,7 @@ export default {
         'blog': 'Blog Management',
         'native-upload': 'Upload Native Image',
         'orders': 'Orders Management',
+        'users': 'Users',
         'faqs': 'FAQ Management'
       }
       return subtitles[this.currentView] || 'Admin Panel'

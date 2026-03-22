@@ -131,6 +131,17 @@ export const orderService = {
   }
 }
 
+export const userService = {
+  async getUsers() {
+    try {
+      const response = await apiClient.get('/users')
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
 export const faqService = {
   async getFAQs() {
     try {

@@ -28,6 +28,7 @@ export default {
         { id: 'blog', label: 'Blog' },
         { id: 'native-upload', label: 'Upload Native Image' },
         { id: 'orders', label: 'Orders' },
+        { id: 'users', label: 'Users' },
         { id: 'faqs', label: 'FAQs' }
       ]
     }
